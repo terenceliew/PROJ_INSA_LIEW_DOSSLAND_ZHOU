@@ -1,13 +1,13 @@
-package fr.insa.mas.IndoorTemperatureSensor;
+package fr.insa.mas.TemperatureSensor;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class IndoorTemperatureSensorApplication {
+public class TemperatureSensorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(IndoorTemperatureSensorApplication.class, args);
+		SpringApplication.run(TemperatureSensorApplication.class, args);
 	}
 
 }
