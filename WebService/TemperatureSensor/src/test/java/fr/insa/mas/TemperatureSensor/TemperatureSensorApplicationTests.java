@@ -1,4 +1,4 @@
-package fr.insa.mas.IndoorTemperatureSensor;
+package fr.insa.mas.TemperatureSensor;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
