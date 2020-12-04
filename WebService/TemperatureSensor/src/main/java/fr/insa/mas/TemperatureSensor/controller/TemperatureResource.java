@@ -19,6 +19,13 @@ import fr.insa.mas.TemperatureSensor.model.Temperature;
 @RestController
 public class TemperatureResource {
 	
+//	private class TemperatureVal{
+//		@JsonProperty("Temperature Value")
+//		
+//		
+//	}
+	
+	
 	@GetMapping("/indoorTemp")
 	public int indoorTempVal(){
 		//OM2M
