@@ -3,25 +3,25 @@ package fr.insa.mas.ShutterService.model;
 public class Shutter {
 	
 	
-	private double currentState;
+	private double currentOpening;
 	private double order;
 	private boolean isMoving;
 	
 	public Shutter() {}
 
-	public Shutter(double currentState, double order, boolean isMoving) {
+	public Shutter(double currentOpening, double order, boolean isMoving) {
 		super();
-		this.currentState = currentState;
+		this.currentOpening = currentOpening;
 		this.order = order;
 		updateIsMoving();
 	}
 	
-	public double getCurrentState() {
-		return currentState;
+	public double getCurrentOpening() {
+		return currentOpening;
 	}
 
-	public void setCurrentState(double currentState) {
-		this.currentState = currentState;
+	public void setCurrentOpening(double currentOpening) {
+		this.currentOpening = currentOpening;
 	}
 
 	public double getOrder() {
@@ -37,7 +37,7 @@ public class Shutter {
 	}
 	
 	public void updateIsMoving() {
-		this.isMoving = !(this.order == this.currentState);
+		this.isMoving = !(this.order == this.currentOpening);
 	}
 	
 	
