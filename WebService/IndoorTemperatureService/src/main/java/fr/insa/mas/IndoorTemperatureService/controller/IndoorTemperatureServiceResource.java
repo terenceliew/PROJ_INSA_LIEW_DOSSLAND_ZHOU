@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 public class IndoorTemperatureServiceResource {
 	
 	@GetMapping(value="/value/{room}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String trialtemp(@PathVariable int room){
+	public String trialtemp(@PathVariable int room){ //TODO : Change return to IndoorTemperature 
 		
 		
 		// request url
