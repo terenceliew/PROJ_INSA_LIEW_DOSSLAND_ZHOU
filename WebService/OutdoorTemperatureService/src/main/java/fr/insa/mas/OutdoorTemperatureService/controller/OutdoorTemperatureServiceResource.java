@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 public class OutdoorTemperatureServiceResource {
 	
 	@GetMapping(value="/value/{room}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String trialtemp(@PathVariable int room){ //TODO : Change return to OutdoorTemperature 
+	public String getOutdoorTemp(@PathVariable int room){ //TODO : Change return to OutdoorTemperature 
 		
 		
 		// request url

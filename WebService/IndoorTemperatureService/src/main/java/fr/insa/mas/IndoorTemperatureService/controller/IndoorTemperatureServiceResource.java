@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import fr.insa.mas.IndoorTemperatureService.model.ContentInstance;
+import fr.insa.mas.IndoorTemperatureService.model.IndoorTemperature;
+import fr.insa.mas.IndoorTemperatureService.model.Mapper;
+
 @RestController
 @RequestMapping("/indoorTemp")
 public class IndoorTemperatureServiceResource {
 	
-	@GetMapping(value="/value/{room}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String trialtemp(@PathVariable int room){ //TODO : Change return to IndoorTemperature 
+	@GetMapping(value="/value/{room}", produces = MediaType.APPLICATION_XML_VALUE)
+	public String getIndoorTemp(@PathVariable int room){ //TODO : Change return to IndoorTemperature 
 		
 		
 		// request url
@@ -32,13 +36,13 @@ public class IndoorTemperatureServiceResource {
 		
 		// add basic authentication header
 		headers.set("X-M2M-Origin", "admin:admin");
-
+		headers.set("Accept", "application/xml");
 		
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+//		headers.setContentType(MediaType.APPLICATION_JSON);
+//		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_XML));
 		
 		// build the request
-		HttpEntity request = new HttpEntity(headers);
+		HttpEntity<String> request = new HttpEntity<String>("parameters",headers);
 		
 		// make an HTTP GET request with headers
 		ResponseEntity<String> response = restTemplate.exchange(
@@ -49,6 +53,17 @@ public class IndoorTemperatureServiceResource {
 		);
 		
 		String resp = response.getBody();
+		
+		System.out.println(resp);
+		System.out.println ("************B");
+		Mapper mapper = new Mapper();
+		System.out.println ("************A");
+		ContentInstance cin = (ContentInstance) mapper.unmarshal(resp);
+		
+		
+//		IndoorTemperature indoorTemp = new IndoorTemperature(room, Double.parseDouble(cin.getContent()));
+		System.out.println ("************");
+		System.out.println (cin.getContent());
 		return resp;
 //		int outdoorTemp = temp.getOutdoorTemp();
 		

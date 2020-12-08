@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import fr.insa.mas.AutomationService.model.IndoorTemperature;
+import fr.insa.mas.AutomationService.model.OutdoorTemperature;
 import fr.insa.mas.AutomationService.model.Shutter;
 import fr.insa.mas.AutomationService.model.Window;
 
@@ -36,16 +38,18 @@ public class AutomationServiceResource {
 		msg += "### Commande actuelle  : "+window.getOrder();
 		
 		//Récupération de la valeur de temperature exterieure
-		double outdoorTemp = restTemplate.getForObject(outTempURI+"value/" + room, Integer.class);
+		OutdoorTemperature outdoorTemp = restTemplate.getForObject(outTempURI+"getOutdoorTemp/" + room, OutdoorTemperature.class);
+		double outdoorTempVal = outdoorTemp.getTempVal();
 		msg += "--- La temperature exterieure est de "+ outdoorTemp+"\n";
 		
 		//Récupération de la valeur de temperature exterieure
-		double indoorTemp = restTemplate.getForObject(inTempURI+"value/" + room, Integer.class);
+		IndoorTemperature indoorTemp = restTemplate.getForObject(inTempURI+"getIndoorTemp/" + room, IndoorTemperature.class);
+		double indoorTempVal = indoorTemp.getTempVal();
 		msg += "--- La temperature interieure est de "+ indoorTemp+"\n";
 		
 		double order;
 		
-		if (outdoorTemp<indoorTemp && (outdoorTemp > 18.0 && outdoorTemp<27)) {
+		if (outdoorTempVal<indoorTempVal && (outdoorTempVal > 18.0 && outdoorTempVal<27)) {
 			msg+=" | Il fait beau! -> il faut ouvrir les fenetres";
 			order = 100.0;			
 		}else{
