@@ -2,6 +2,7 @@ package fr.insa.mas.OutdoorTemperatureService.controller;
 
 import java.util.Collections;
 
+import org.eclipse.om2m.commons.resource.ContentInstance;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -13,12 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import fr.insa.mas.OutdoorTemperatureService.model.OutdoorTemperature;
+import fr.insa.mas.OutdoorTemperatureService.model.Mapper;
+import fr.insa.mas.OutdoorTemperatureService.model.OutdoorTemperature;
+
 @RestController
 @RequestMapping("/outdoorTemp")
 public class OutdoorTemperatureServiceResource {
 	
 	@GetMapping(value="/value/{room}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String getOutdoorTemp(@PathVariable int room){ //TODO : Change return to OutdoorTemperature 
+	public OutdoorTemperature getOutdoorTemp(@PathVariable int room){ //TODO : Change return to OutdoorTemperature 
 		
 		
 		// request url
@@ -32,13 +37,12 @@ public class OutdoorTemperatureServiceResource {
 		
 		// add basic authentication header
 		headers.set("X-M2M-Origin", "admin:admin");
-
-		
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-		
+		headers.set("Accept", "application/xml");
+				
+//		headers.setContentType(MediaType.APPLICATION_JSON);
+				
 		// build the request
-		HttpEntity request = new HttpEntity(headers);
+		HttpEntity<String> request = new HttpEntity<String>("parameters",headers);
 		
 		// make an HTTP GET request with headers
 		ResponseEntity<String> response = restTemplate.exchange(
@@ -48,14 +52,22 @@ public class OutdoorTemperatureServiceResource {
 		        String.class
 		);
 		
-		String resp = response.getBody();
-		return resp;
-//		int outdoorTemp = temp.getOutdoorTemp();
+		String resp = (String) response.getBody();
+		System.out.println(resp);
+
+		Mapper mapper = new Mapper();
+
+		ContentInstance cin = (ContentInstance) mapper.unmarshal(resp);
 		
-//		Temperature temp = restTemplate.getForObject("http://localhost:8080/~/mn-cse/mn-name/OutdoorTemp_1/DATA/la", Temperature.class);
-//		int outdoorTemp = temp.getOutdoorTemp();
+		System.out.println ("************");
 		
-//		return outdoorTemp;
+		double outdoorTempVal = Double.parseDouble(cin.getContent());
+		
+		System.out.println (outdoorTempVal);
+		
+		OutdoorTemperature outdoorTemp = new OutdoorTemperature(room, outdoorTempVal);
+
+		return outdoorTemp;
 		
 	}
 }
