@@ -24,7 +24,7 @@ import fr.insa.mas.WindowService.model.Window;
 @RequestMapping("/window")
 public class WindowResource {
 	
-	Window window = new Window(1, 5.9, 6.7, true);
+	Window window = new Window(1, 0, 0, false);
 
 	@GetMapping(value ="/{room}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Window getWindow(@PathVariable("room") int room) {
