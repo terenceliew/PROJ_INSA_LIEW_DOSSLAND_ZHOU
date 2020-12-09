@@ -16,6 +16,8 @@ public class Window {
 		this.isMoving = isMoving;
 	}
 	
+	public Window(){}
+	
 	public int getRoom() {
 		return room;
 	}
@@ -30,6 +32,7 @@ public class Window {
 
 	public void setCurrentOpening(double currentOpening) {
 		this.currentOpening = currentOpening;
+		updateIsMoving();
 	}
 
 	public double getOrder() {
@@ -38,14 +41,15 @@ public class Window {
 
 	public void setOrder(double order) {
 		this.order = order;
+		updateIsMoving();
 	}
 
 	public boolean isMoving() {
 		return isMoving;
 	}
 
-	public void setMoving(boolean isMoving) {
-		this.isMoving = isMoving;
+	public void updateIsMoving() {
+		this.isMoving = !(this.order == this.currentOpening);
 	}
 	
 	
