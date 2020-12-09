@@ -4,6 +4,12 @@ public class OutdoorTemperature {
 	private int room;
 	private double tempVal;
 	
+	
+	
+	public OutdoorTemperature() {
+		super();
+	}
+
 	public OutdoorTemperature(int room, double tempVal) {
 		super();
 		this.room = room;

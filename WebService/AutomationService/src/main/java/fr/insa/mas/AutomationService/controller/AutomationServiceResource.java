@@ -28,25 +28,28 @@ public class AutomationServiceResource {
 		RestTemplate restTemplate = new RestTemplate();
 		
 		String msg="";
-		
+		System.out.println("Hello");
 		//Récupération de la valeur d'ouverture courante, en%
 		double currentOpeningPercent = restTemplate.getForObject(windowURI+ room +"/opening?unit=percent",Double.class);
 		msg += "Ouverture actuelle : "+ currentOpeningPercent+" %";
+		System.out.println(msg);
 		
-		//Récupération de l'objet Shutter
-		Window window = restTemplate.getForObject(windowURI, Window.class);
+		//Récupération de l'objet Window
+		Window window = restTemplate.getForObject(windowURI+room, Window.class);
 		msg += "### Commande actuelle  : "+window.getOrder();
+		System.out.println(msg);
 		
 		//Récupération de la valeur de temperature exterieure
-		OutdoorTemperature outdoorTemp = restTemplate.getForObject(outTempURI+"getOutdoorTemp/" + room, OutdoorTemperature.class);
+		OutdoorTemperature outdoorTemp = restTemplate.getForObject(outTempURI+"value/" + room, OutdoorTemperature.class);
 		double outdoorTempVal = outdoorTemp.getTempVal();
-		msg += "--- La temperature exterieure est de "+ outdoorTemp+"\n";
+		msg += "--- La temperature exterieure est de "+ outdoorTempVal+"\n";
+		System.out.println(msg);
 		
 		//Récupération de la valeur de temperature exterieure
-		IndoorTemperature indoorTemp = restTemplate.getForObject(inTempURI+"getIndoorTemp/" + room, IndoorTemperature.class);
+		IndoorTemperature indoorTemp = restTemplate.getForObject(inTempURI+"value/" + room, IndoorTemperature.class);
 		double indoorTempVal = indoorTemp.getTempVal();
-		msg += "--- La temperature interieure est de "+ indoorTemp+"\n";
-		
+		msg += "--- La temperature interieure est de "+ indoorTempVal+"\n";
+		System.out.println(msg);
 		double order;
 		
 		if (outdoorTempVal<indoorTempVal && (outdoorTempVal > 18.0 && outdoorTempVal<27)) {
@@ -56,14 +59,19 @@ public class AutomationServiceResource {
 			msg+=" | Il fait pas beau! -> il faut fermer les fenetres";
 			order = 0;
 		}
+		System.out.println(msg);
 		window.setOrder(order); //TODO: add http POST for window using WindowService
+		restTemplate.postForObject(windowURI+room+"/order?value="+order, "", String.class);
 		
-
+		System.out.println("good");
+		
 		//Requête de mise à jour du Window
-		restTemplate.put(windowURI, window);
+//		restTemplate.put(windowURI, window);
+		
+		System.out.println("very good");
 		
 		//Récupération du nouveau statut de l'objet Window
-		String newStatus = restTemplate.getForObject(windowURI+"status", String.class);
+		String newStatus = restTemplate.getForObject(windowURI+room+"/status", String.class);
 		msg += " *** Le statut du fenetre est : " + newStatus;
 		
 		return msg;

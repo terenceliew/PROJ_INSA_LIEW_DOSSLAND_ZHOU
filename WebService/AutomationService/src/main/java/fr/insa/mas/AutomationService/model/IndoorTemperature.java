@@ -5,6 +5,12 @@ public class IndoorTemperature {
 	private int room;
 	private double tempVal;
 	
+	
+	
+	public IndoorTemperature() {
+		super();
+	}
+
 	public IndoorTemperature(int room, double tempVal) {
 		super();
 		this.room = room;
