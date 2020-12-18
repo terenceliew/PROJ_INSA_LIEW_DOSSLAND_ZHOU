@@ -60,13 +60,13 @@ public class AutomationServiceResource {
 			order = 0;
 		}
 		System.out.println(msg);
-		window.setOrder(order); //TODO: add http POST for window using WindowService
+//		window.setOrder(order); //TODO: add http POST for window using WindowService
 		restTemplate.postForObject(windowURI+room+"/order?value="+order, "", String.class);
 		
 		System.out.println("good");
 		
 		//Requête de mise à jour du Window
-//		restTemplate.put(windowURI, window);
+		restTemplate.put(windowURI+room, null);
 		
 		System.out.println("very good");
 		
