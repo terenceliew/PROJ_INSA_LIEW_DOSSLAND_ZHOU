@@ -28,24 +28,24 @@ public class AutomationServiceResource {
 		String msg="";
 		//Récupération de la valeur d'ouverture courante, en%
 		double currentOpeningPercent = restTemplate.getForObject(windowURI+ room +"/opening?unit=percent",Double.class);
-		msg += "<p>Current Opening : "+ currentOpeningPercent+" %</p>\n";
+		msg += "<p>Current Opening ([0%,100%] 0 % = closed, 100 % = open): "+ currentOpeningPercent+" %</p>\n";
 		System.out.println(msg);
 		
 		//Récupération de l'objet Window
 		Window window = restTemplate.getForObject(windowURI+room, Window.class);
-		msg += "<p>Current Order  : "+window.getOrder()+"</p>\n";
+		msg += "<p>Current Order ([0,1] 0 = closed, 1 = open) : "+window.getOrder()+"</p>\n";
 		System.out.println(msg);
 		
 		//Récupération de la valeur de temperature exterieure
 		OutdoorTemperature outdoorTemp = restTemplate.getForObject(outTempURI+"value/" + room, OutdoorTemperature.class);
 		double outdoorTempVal = outdoorTemp.getTempVal();
-		msg += "<p>Outdoor Temperature : "+ outdoorTempVal+"</p>\n";
+		msg += "<p>Outdoor Temperature : "+ outdoorTempVal+" °C</p>\n";
 		System.out.println(msg);
 		
 		//Récupération de la valeur de temperature interieure
 		IndoorTemperature indoorTemp = restTemplate.getForObject(inTempURI+"value/" + room, IndoorTemperature.class);
 		double indoorTempVal = indoorTemp.getTempVal();
-		msg += "<p>Indoor Temperature : "+ indoorTempVal+"</p>\n";
+		msg += "<p>Indoor Temperature : "+ indoorTempVal+" °C</p>\n";
 		System.out.println(msg);
 		double order;
 		
@@ -56,7 +56,7 @@ public class AutomationServiceResource {
 			msg+="<p>Terrible weather outside! -> Close the window!</p>\n";
 			order = 0;  //order in decimal
 		}
-		msg+="<p>New Order : " + order + " (in decimal)</p>\n";
+		msg+="<p>New Order ([0,1] 0 = closed, 1 = open) : " + order + "</p>\n";
 		System.out.println(msg);
 //		window.setOrder(order); //TODO: add http POST for window using WindowService
 		restTemplate.postForObject(windowURI+room+"/order?value="+order, "", String.class);
